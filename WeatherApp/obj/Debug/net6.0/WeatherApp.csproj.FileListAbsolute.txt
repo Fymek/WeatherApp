@@ -1,0 +1,15 @@
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\bin\Debug\net6.0\WeatherApp.exe
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\bin\Debug\net6.0\WeatherApp.deps.json
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\bin\Debug\net6.0\WeatherApp.runtimeconfig.json
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\bin\Debug\net6.0\WeatherApp.dll
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\bin\Debug\net6.0\WeatherApp.pdb
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\WeatherApp.csproj.AssemblyReference.cache
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\WeatherApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\WeatherApp.AssemblyInfoInputs.cache
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\WeatherApp.AssemblyInfo.cs
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\WeatherApp.csproj.CoreCompileInputs.cache
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\WeatherApp.dll
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\refint\WeatherApp.dll
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\WeatherApp.pdb
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\WeatherApp.genruntimeconfig.cache
+C:\Users\Fymek\source\repos\WeatherApp\WeatherApp\obj\Debug\net6.0\ref\WeatherApp.dll
