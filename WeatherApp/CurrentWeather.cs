@@ -16,7 +16,7 @@ namespace WeatherApp
         {
             Console.Write("Podaj nazwe miasta: ");
             string city = Console.ReadLine();
-            string jsonCurrentWeather = AccessWebPage.HttpGet("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=9247303b46ab8e34e80eb533aa513f23");
+            string jsonCurrentWeather = AccessWebPage.HttpGet("http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&APPID=9247303b46ab8e34e80eb533aa513f23&units=metric");
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WeatherInfo.Root));
          
             WeatherInfo.Root root = new WeatherInfo.Root();
@@ -26,13 +26,23 @@ namespace WeatherApp
 
                 root = (WeatherInfo.Root)ser.ReadObject(s);
             }
-            
-            
-            Console.WriteLine("Temperatura wynosi {0})", root.main.temp);//todo zmienic na celsjusze
+            Console.WriteLine("Aktualna temperatura: {0} C\n", root.list[0].main.temp);
+            int cnt = CountCnt();
+            for (int i = 0; i < cnt ;i++)
+            {
+                Console.WriteLine("\n time: {0}", root.list[i].dt_txt);
+                Console.WriteLine("Maksymalna temperatura: {0} C", root.list[i].main.temp_max);
+                Console.WriteLine("Minimalna temperatura: {0} C", root.list[i].main.temp_min);
+                if (root.list[i].rain == null)
+                    Console.WriteLine("Ilość opadów: 0mm");
+                else
+                    Console.WriteLine("Ilość opadów: {0}mm", root.list[i].rain.threeh);
+                Console.WriteLine("Wiatr:{0} m/s {1} ({2})", root.list[i].wind.speed, DegreesToCardinal(root.list[i].wind.deg), root.list[i].wind.deg);
+            }
+           
 
-            //Console.WriteLine("");
-            //Console.WriteLine(jsonCurrentWeather);
-            //Console.ReadLine();
+
+            
         }
 
         public static Stream GenerateStreamFromString(string s)
@@ -45,35 +55,19 @@ namespace WeatherApp
             return stream;
         }
 
-        [DataContract]
-        internal class WeatherNow
+        public int CountCnt()
         {
+            int h = DateTime.Now.Hour;
+            
+            return (24-h) / 3;
+        }
 
-            [DataMember]
-            public WeatherInfo.Coord coord { get; set; }
-            [DataMember]
-            public WeatherInfo.Sys sys { get; set; }
-            [DataMember]
-            public List<WeatherInfo.Weather> weather { get; set; }
-            [DataMember]
-            public string @base { get; set; }
-            [DataMember]
-            public WeatherInfo.Main main { get; set; }
-            [DataMember]
-            public WeatherInfo.Wind wind { get; set; }
-            [DataMember]
-            public Dictionary<string, double> rain { get; set; }
-            [DataMember]
-            public WeatherInfo.Clouds clouds { get; set; }
-            [DataMember]
-            public int dt { get; set; }
-            [DataMember]
-            public int id { get; set; }
-            [DataMember]
-            public string name { get; set; }
-            [DataMember]
-            public int cod { get; set; }
+        public static string DegreesToCardinal(double degrees)
+        {
+            degrees *= 10;
 
+            string[] caridnals = { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N" };
+            return caridnals[(int)Math.Round(((double)degrees % 3600) / 225)];
         }
 
     }
