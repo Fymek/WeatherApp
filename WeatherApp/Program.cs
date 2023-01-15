@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using static WeatherApp.WeatherInfo;
 
 namespace WeatherApp
 {
@@ -14,26 +15,43 @@ namespace WeatherApp
         {
             string text = File.ReadAllText("save.txt");
             Console.WriteLine(text);
+            if(text.Count() > 0)
+                return text;
             return null;
         }
         private static async Task SaveCity(string city)
         {
-         await  File.WriteAllTextAsync("save.txt", city);
+            Console.WriteLine("\nUstawić miasto jako domysle? (tak/nie)");
+            string ans = Console.ReadLine();
+            if(ans.ToLower().CompareTo("tak")==0)
+                await  File.WriteAllTextAsync("save.txt", city);
         }
-        //ogarnac ui 
+        private static string ReadCity()
+        {
+            Console.Write("Podaj nazwe miasta: ");
+            string city = Console.ReadLine();
+
+            return city;
+        }
+        
         static void Main(String[] args)
         {
             string city = LoadCity();
             if(city == null)
             {
-                Console.Write("Podaj nazwe miasta: ");
-                city = Console.ReadLine();
+                city = ReadCity();
             }
-            SaveCity(city);
             CurrentWeather weatherNow = new CurrentWeather();
-            weatherNow.GetCurrentWeather(city);
-            weatherNow.ShowWeather();
-            weatherNow.ShowForecast();
+            while (true)
+            {
+                //Console.Clear();
+                
+                weatherNow.GetCurrentWeather(city);
+                weatherNow.ShowWeather();
+                weatherNow.ShowForecast();
+                SaveCity(city);
+                city=ReadCity();
+            }
             
         }
     }

@@ -2,24 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization;
+using System.Threading.Tasks; 
 using System.IO;
 using System.Runtime.Serialization.Json;
 using WeatherApp;
 using static WeatherApp.WeatherInfo;
+using System.Data;
 
 namespace WeatherApp
 {
     class CurrentWeather
     {
         private WeatherInfo.Root root;
+
+        public CurrentWeather()
+        {
+            root = new WeatherInfo.Root();
+        }
         public void GetCurrentWeather(string city)
         {
             string jsonCurrentWeather = AccessWebPage.HttpGet(city);
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WeatherInfo.Root));
-         
-            root = new WeatherInfo.Root();
 
             using (Stream s = GenerateStreamFromString(jsonCurrentWeather))
             {
@@ -31,14 +34,25 @@ namespace WeatherApp
         }
         public void ShowWeather()
         {
+            Console.WriteLine("{0}, godz.{1}:{2}", root.city.name,LocalTime(),DateTime.Now.Minute);
             Console.WriteLine("Aktualna temperatura: {0} C\n", root.list[0].main.temp);
+        
         }
         public void ShowForecast()
         {
+            Console.WriteLine("Prognoza pogody do końca dnia");
             int cnt = CountCnt();
             for (int i = 0; i < cnt; i++)
             {
-                Console.WriteLine("\n time: {0}", root.list[i].dt_txt);
+                var parsedDate = DateTime.Parse(root.list[i].dt_txt);
+                int time = LocalTime(parsedDate.Hour);
+                int endTime;
+                if (time+3 > 24)
+                     endTime = 24;              
+                else                
+                    endTime = time + 3;
+                
+                Console.WriteLine("\ntime:({0} - {1})", time, endTime);
                 Console.WriteLine("Maksymalna temperatura: {0} C", root.list[i].main.temp_max);
                 Console.WriteLine("Minimalna temperatura: {0} C", root.list[i].main.temp_min);
                 if (root.list[i].rain == null)
@@ -59,11 +73,29 @@ namespace WeatherApp
             return stream;
         }
 
-        public int CountCnt()
+        public int LocalTime(int h = -1)
         {
-            int h = DateTime.Now.Hour;
-            
-            return (24-h) / 3;
+            if(h < 0)
+                h = DateTime.UtcNow.Hour;
+
+            int time = h + (root.city.timezone / 3600);
+            if(time > 24)
+            {
+                return time - 24;
+            }
+            if(time < 0)
+            {
+                return 24 + time;
+            }
+            return time;
+        }
+        public int CountCnt() { 
+            int temp = 24 - LocalTime();
+            if(temp == 0)
+            {
+                return 8;
+            }
+            return temp / 3;
         }
 
         public static string DegreesToCardinal(double degrees)
