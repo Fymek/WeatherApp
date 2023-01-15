@@ -12,6 +12,7 @@ namespace WeatherApp
     {
         private const string ApiUrlBase = "http://api.openweathermap.org/data/2.5/forecast?q=";
         private const string UnitParameter = "units=metric";
+        private const string TimeStaps = "cnt=9"; // MAKS 40 FOR FREE OPENWEATHER API
 
         private const string ApiKey = "9247303b46ab8e34e80eb533aa513f23";
         public static string HttpGet(string city)
@@ -29,7 +30,7 @@ namespace WeatherApp
 
         private static string BuildUrlWithParams(string city)
         {
-            string UrlRequest = ApiUrlBase+city+"&APPID="+ApiKey+"&"+UnitParameter;
+            string UrlRequest = ApiUrlBase+city+"&APPID="+ApiKey+"&"+UnitParameter+"&"+TimeStaps;
             return UrlRequest;
         }
     }
